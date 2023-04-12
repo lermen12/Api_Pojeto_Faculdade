@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping ("/api/funcionario")
+@RequestMapping("/api/funcionario")
 public class FuncionarioController {
 
   private final FuncionarioService service;
@@ -28,37 +28,63 @@ public class FuncionarioController {
   }
 
   @PostMapping
-  public ResponseEntity<Funcionario> cadastrarFuncionario(@RequestBody Funcionario funcionario){
-        service.salvarFuncionario(funcionario);
-        return new ResponseEntity<>(funcionario, HttpStatus.OK);
+  public ResponseEntity<Funcionario> cadastrarFuncionario(@RequestBody Funcionario funcionario) {
+    try {
+      service.salvarFuncionario(funcionario);
+      return new ResponseEntity<>(funcionario, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
+
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> excluirFuncionario (@PathVariable Long id){
-    service.excluirFuncionario(id);
+  public ResponseEntity<String> excluirFuncionario(@PathVariable Long id) {
+    try {
+      service.excluirFuncionario(id);
+    } catch (Exception e) {
+      return new ResponseEntity<>("Funcionário não encontrado!", HttpStatus.BAD_REQUEST);
+    }
     return new ResponseEntity<>("Funcionário excluido com sucesso!", HttpStatus.OK);
   }
 
   @GetMapping
-  public ResponseEntity<List<Funcionario>> buscarFuncionarios(){
-    List<Funcionario> funcionarios = service.buscarFuncionarios();
-    return new ResponseEntity<>(funcionarios, HttpStatus.OK);
+  public ResponseEntity<List<Funcionario>> buscarFuncionarios() {
+    try {
+      List<Funcionario> funcionarios = service.buscarFuncionarios();
+      return new ResponseEntity<>(funcionarios, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Funcionario> buscarFuncionarioPorId(@PathVariable Long id){
-    Optional<Funcionario> funcionario = service.buscarFuncionarioPorId(id);
-    return new ResponseEntity<>(funcionario.get(), HttpStatus.OK);
+  public ResponseEntity<Funcionario> buscarFuncionarioPorId(@PathVariable Long id) {
+    try {
+      Optional<Funcionario> funcionario = service.buscarFuncionarioPorId(id);
+      return new ResponseEntity<>(funcionario.get(), HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Optional<Funcionario>> EditarFuncionario(@RequestBody FuncionarioDTO funcionarioDTO, @PathVariable Long id){
-    service.editarFuncionario(id, funcionarioDTO);
-    Optional<Funcionario> funcionario = service.buscarFuncionarioPorId(id);
-    return new ResponseEntity<>(funcionario, HttpStatus.OK);
+  public ResponseEntity<Optional<Funcionario>> EditarFuncionario(@RequestBody FuncionarioDTO funcionarioDTO, @PathVariable Long id) {
+    try {
+      service.editarFuncionario(id, funcionarioDTO);
+      Optional<Funcionario> funcionario = service.buscarFuncionarioPorId(id);
+      return new ResponseEntity<>(funcionario, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
+
   @GetMapping("/nome")
-  public ResponseEntity<List<Funcionario>> buscarFuncionariosPorNome(@RequestParam String nome){
-    List<Funcionario> funcionarios = service.buscarPorNomeFuncionario(nome);
-    return new ResponseEntity<>(funcionarios, HttpStatus.OK);
+  public ResponseEntity<List<Funcionario>> buscarFuncionariosPorNome(@RequestParam String nome) {
+    try {
+      List<Funcionario> funcionarios = service.buscarPorNomeFuncionario(nome);
+      return new ResponseEntity<>(funcionarios, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }
