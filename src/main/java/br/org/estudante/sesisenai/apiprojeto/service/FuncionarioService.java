@@ -31,8 +31,11 @@ public class FuncionarioService {
   public Optional<Funcionario> buscarFuncionarioPorId(Long id){
     return funcionarioRepository.findById(id);
     }
-  public void editarFuncionario (Long id, FuncionarioDTO funcionarioDTO){
+  public void editarFuncionario (Long id, FuncionarioDTO funcionarioDTO) throws Exception {
     Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
+
+    if(!funcionario.isPresent() || funcionario.isEmpty()) throw new Exception("Funcionário não encontrado");
+
     funcionario.get().setNome(funcionarioDTO.getNome());
     funcionario.get().setEmail(funcionarioDTO.getEmail());
     funcionario.get().setSetor(funcionarioDTO.getSetor());
