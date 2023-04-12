@@ -29,37 +29,62 @@ public class ChamadoController {
   }
 
   @PostMapping
-  public ResponseEntity<Chamado> cadastrarChamado(@RequestBody Chamado chamado, @RequestParam Long id){
-    service.salvarChamado(chamado, id);
-    return new ResponseEntity<>(chamado, HttpStatus.OK);
+  public ResponseEntity<Chamado> cadastrarChamado(@RequestBody Chamado chamado, @RequestParam Long id) {
+    try {
+      service.salvarChamado(chamado, id);
+      return new ResponseEntity<>(chamado, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
+
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> excluirChamado (@PathVariable Long id){
-    service.excluirChamado(id);
+  public ResponseEntity<String> excluirChamado(@PathVariable Long id) {
+    try {
+      service.excluirChamado(id);
+    } catch (Exception e) {
+      return new ResponseEntity<>("Chamado não encontrado", HttpStatus.BAD_REQUEST);
+    }
     return new ResponseEntity<>("Chamado excluido com sucesso!", HttpStatus.OK);
   }
 
   @GetMapping
-  public ResponseEntity<List<Chamado>> buscarChamados(){
-    List<Chamado> chamados = service.buscarChamados();
-    return new ResponseEntity<>(chamados, HttpStatus.OK);
+  public ResponseEntity<List<Chamado>> buscarChamados() {
+    try {
+      List<Chamado> chamados = service.buscarChamados();
+      return new ResponseEntity<>(chamados, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Chamado> buscarChamadoPorId(@PathVariable Long id){
-    Optional<Chamado> chamado = service.buscarChamadoPorId(id);
-    return new ResponseEntity<>(chamado.get(), HttpStatus.OK);
+  public ResponseEntity<Chamado> buscarChamadoPorId(@PathVariable Long id) {
+    try {
+      Optional<Chamado> chamado = service.buscarChamadoPorId(id);
+      return new ResponseEntity<>(chamado.get(), HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Optional<Chamado>> EditarChamado(@RequestBody ChamadoDTO chamadoDTO, @PathVariable Long id){
-    service.editarChamado(chamadoDTO,id);
-    Optional<Chamado> chamado = service.buscarChamadoPorId(id);
-    return new ResponseEntity<>(chamado, HttpStatus.OK);
+  public ResponseEntity<String> EditarChamado(@RequestBody ChamadoDTO chamadoDTO, @PathVariable Long id) {
+    try {
+      service.editarChamado(chamadoDTO, id);
+    } catch (Exception e) {
+      return new ResponseEntity<>("Chamado não encontrado!", HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>("Chamado alterado com sucesso!", HttpStatus.OK);
   }
+
   @GetMapping("/funcionario/{id}")
-  public ResponseEntity<List<FuncionarioChamamdoDTO>> listarChamadoPorFuncionario(@PathVariable Long id){
-    List<FuncionarioChamamdoDTO> dtoList = service.ListarChamadoPorFuncionario(id);
-    return new ResponseEntity<>(dtoList, HttpStatus.OK);
+  public ResponseEntity<List<FuncionarioChamamdoDTO>> listarChamadoPorFuncionario(@PathVariable Long id) {
+    try {
+      List<FuncionarioChamamdoDTO> dtoList = service.ListarChamadoPorFuncionario(id);
+      return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }

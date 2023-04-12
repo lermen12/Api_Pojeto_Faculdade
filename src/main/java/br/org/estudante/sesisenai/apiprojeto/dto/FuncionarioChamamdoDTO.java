@@ -8,5 +8,4 @@ public class FuncionarioChamamdoDTO {
   private String name;
   private String assunto;
   private String descricao;
-
 }
