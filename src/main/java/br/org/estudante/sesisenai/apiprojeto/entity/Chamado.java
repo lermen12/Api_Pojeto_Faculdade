@@ -17,7 +17,6 @@ public class Chamado {
   private Date data;
   private String assunto;
   private String discricaoProblema;
-
   @OneToOne
   private Funcionario funcionario;
 

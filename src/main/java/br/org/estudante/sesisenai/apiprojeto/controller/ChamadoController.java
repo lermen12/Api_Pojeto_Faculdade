@@ -1,6 +1,7 @@
 package br.org.estudante.sesisenai.apiprojeto.controller;
 
 import br.org.estudante.sesisenai.apiprojeto.dto.ChamadoDTO;
+import br.org.estudante.sesisenai.apiprojeto.dto.FuncionarioChamamdoDTO;
 import br.org.estudante.sesisenai.apiprojeto.entity.Chamado;
 import br.org.estudante.sesisenai.apiprojeto.service.ChamadoService;
 import java.util.List;
@@ -55,5 +56,10 @@ public class ChamadoController {
     service.editarChamado(chamadoDTO,id);
     Optional<Chamado> chamado = service.buscarChamadoPorId(id);
     return new ResponseEntity<>(chamado, HttpStatus.OK);
+  }
+  @GetMapping("/funcionario/{id}")
+  public ResponseEntity<List<FuncionarioChamamdoDTO>> listarChamadoPorFuncionario(@PathVariable Long id){
+    List<FuncionarioChamamdoDTO> dtoList = service.ListarChamadoPorFuncionario(id);
+    return new ResponseEntity<>(dtoList, HttpStatus.OK);
   }
 }

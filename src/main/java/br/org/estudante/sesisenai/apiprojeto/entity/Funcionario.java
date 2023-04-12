@@ -1,12 +1,9 @@
 package br.org.estudante.sesisenai.apiprojeto.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
 import lombok.Data;
 
 @Data
@@ -19,8 +16,4 @@ public class Funcionario {
   private String nome;
   private String email;
   private String setor;
-  @JsonIgnore
-  @OneToMany
-  private List<Chamado> chamados;
-
 }

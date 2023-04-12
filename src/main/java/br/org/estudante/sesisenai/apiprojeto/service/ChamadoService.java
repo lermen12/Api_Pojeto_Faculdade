@@ -1,10 +1,12 @@
 package br.org.estudante.sesisenai.apiprojeto.service;
 
 import br.org.estudante.sesisenai.apiprojeto.dto.ChamadoDTO;
+import br.org.estudante.sesisenai.apiprojeto.dto.FuncionarioChamamdoDTO;
 import br.org.estudante.sesisenai.apiprojeto.entity.Chamado;
 import br.org.estudante.sesisenai.apiprojeto.entity.Funcionario;
 import br.org.estudante.sesisenai.apiprojeto.repository.ChamadoRepository;
 import br.org.estudante.sesisenai.apiprojeto.repository.FuncionarioRepository;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -47,5 +49,20 @@ public class ChamadoService {
       chamado.get().setDiscricaoProblema(chamadoDTO.getDiscricaoProblema());
       chamadoRepository.save(chamado.get());
     }
+  }
+  public List<FuncionarioChamamdoDTO> ListarChamadoPorFuncionario(Long id){
+    Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
+    List<Chamado> chamados = chamadoRepository.findAll();
+    List<FuncionarioChamamdoDTO> dtoList = new ArrayList<>();
+    for (Chamado chamado: chamados ) {
+      if (funcionario.get().getId() == chamado.getFuncionario().getId()){
+        FuncionarioChamamdoDTO funcionarioChamamdoDTO = new FuncionarioChamamdoDTO();
+        funcionarioChamamdoDTO.setName(funcionario.get().getNome());
+        funcionarioChamamdoDTO.setAssunto(chamado.getAssunto());
+        funcionarioChamamdoDTO.setDescricao(chamado.getDiscricaoProblema());
+        dtoList.add(funcionarioChamamdoDTO);
+      }
+    }
+    return dtoList;
   }
 }
